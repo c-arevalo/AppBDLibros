@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AppBDLibros</string>
+    <string name="cod">Código de libro</string>
+    <string name="tit">Título del libro</string>
+    <string name="Consulta">Consultar</string>
+    <string name="b">Borrar</string>
+    <string name="insertar">Insertar</string>
+    <string name="no">Libro no existente</string>
+    <string name="datos">Faltan datos del libro</string>
+    <string name="insertado">Datos insertados</string>
+    <string name="borrar">Inserta el código o el título del libro a borrar</string>
+    <string name="borrado">Libro borrado de la base de datos</string>
+</resources>
