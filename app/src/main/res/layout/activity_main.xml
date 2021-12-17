@@ -7,13 +7,15 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnLibros"
         android:layout_width="318dp"
         android:layout_height="37dp"
         android:layout_marginTop="16dp"
-        android:text="Button"
+        android:text="LISTAR LIBROS"
+        android:onClick="Lista"
         app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btnConsulta"
@@ -47,8 +49,8 @@
 
     <EditText
         android:id="@+id/txtCod"
-        android:layout_width="163dp"
-        android:layout_height="37dp"
+        android:layout_width="192dp"
+        android:layout_height="40dp"
         android:layout_marginTop="264dp"
         android:ems="10"
         android:hint="Código del libro"
@@ -61,8 +63,8 @@
 
     <EditText
         android:id="@+id/txtAutor"
-        android:layout_width="190dp"
-        android:layout_height="37dp"
+        android:layout_width="192dp"
+        android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Autor del libro"
@@ -75,8 +77,8 @@
 
     <EditText
         android:id="@+id/txtTitulo"
-        android:layout_width="163dp"
-        android:layout_height="36dp"
+        android:layout_width="192dp"
+        android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Título del libro"

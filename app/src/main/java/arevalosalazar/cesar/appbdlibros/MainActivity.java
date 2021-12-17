@@ -3,6 +3,7 @@ package arevalosalazar.cesar.appbdlibros;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = crearbd.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM libros WHERE codigo='" + cod + "'", null);
         if (c.moveToNext()) {
+            etCodigo.setText("");
             etTitulo.setText(c.getString(1));
             etAutor.setText(c.getString(2));
         } else {
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public void insertarLibro(View v) {
         SQLiteDatabase db = crearbd.getWritableDatabase();
         if (etCodigo.getText().toString().equals("") || etTitulo.getText().toString().equals("") || etAutor.getText().toString().equals("")) {
-            verMensajeToast("Mete datos puto");
+            verMensajeToast("Inserta todos los datos");
         } else {
             String cod = etCodigo.getText().toString();
             String titulo = etTitulo.getText().toString();
@@ -64,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 db.execSQL("INSERT INTO libros VALUES(" + cod + ",'" + titulo + "', '" + autor + "');");
                 verMensajeToast("Libro insertado correctamente");
-            } catch (Exception sqlex) {
-                verMensajeToast(sqlex.getMessage());
+            } catch (Exception sqlexc) {
+                verMensajeToast(sqlexc.getMessage());
             }
         }
         LimpiarCajas();
@@ -75,38 +77,47 @@ public class MainActivity extends AppCompatActivity {
     public void BorrarLibro(View v) {
         SQLiteDatabase db = crearbd.getWritableDatabase();
         if (TextUtils.isEmpty(etCodigo.getText()) && TextUtils.isEmpty(etTitulo.getText())) {
-            verMensajeToast(String.valueOf(R.string.borrar));
+            verMensajeToast("Inserta el código o el título del libro a borrar");
         } else {
-            if (TextUtils.isEmpty(etCodigo.getText())) {
-                String titulo = etTitulo.getText().toString();
-                try {
-                    db.execSQL("DELETE FROM libros WHERE titulo= '" + titulo + "'");
-                    verMensajeToast("Libro borrado correctamente");
-                } catch (Exception sqlex) {
-                    verMensajeToast(sqlex.getMessage());
+            String titulo = etTitulo.getText().toString();
+            String cod = etCodigo.getText().toString();
+            SQLiteDatabase dbr = crearbd.getReadableDatabase();
+            Cursor c = db.rawQuery("select * from libros where codigo= '" + cod + "' or titulo = '" + titulo + "'", null);
+            if (c.moveToNext()) {
+                if (TextUtils.isEmpty(etCodigo.getText())) {
+                    try {
+                        db.execSQL("DELETE FROM libros WHERE titulo= '" + titulo + "'");
+                        verMensajeToast("Libro borrado correctamente");
+                    } catch (Exception sqlex) {
+                        verMensajeToast(sqlex.getMessage());
+                    }
+                } else if (TextUtils.isEmpty(etTitulo.getText())) {
+                    try {
+                        db.execSQL("DELETE FROM libros WHERE codigo= '" + cod + "'");
+                        verMensajeToast("Libro borrado correctamente");
+                    } catch (Exception sqlex) {
+                        verMensajeToast(sqlex.getMessage());
+                    }
+                } else {
+                    try {
+                        db.execSQL("DELETE FROM libros WHERE codigo= '" + cod + "' and titulo= '" + titulo + "'");
+                        verMensajeToast("Libro borrado correctamente");
+                    } catch (Exception sqlex) {
+                        verMensajeToast(sqlex.getMessage());
+                    }
                 }
-            }else if (TextUtils.isEmpty(etTitulo.getText())) {
-                String cod = etCodigo.getText().toString();
-                try {
-                    db.execSQL("DELETE FROM libros WHERE codigo= '" + cod + "'");
-                    verMensajeToast("Libro borrado correctamente");
-                } catch (Exception sqlex) {
-                    verMensajeToast(sqlex.getMessage());
-                }
-            }else {
-                String titulo = etTitulo.getText().toString();
-                String cod = etCodigo.getText().toString();
-                try {
-                    db.execSQL("DELETE FROM libros WHERE codigo= '" + cod + "' and titulo= '" + titulo + "'");
-                    verMensajeToast("Libro borrado correctamente");
-                } catch (Exception sqlex) {
-                    verMensajeToast(sqlex.getMessage());
-                }
+            } else {
+                verMensajeToast("Ese libro no existe");
             }
         }
 
         LimpiarCajas();
         db.close();
+    }
+
+    public void Lista(View v){
+        Intent i = new Intent(this, VerLibros.class);
+        startActivity(i);
     }
 
     public void verMensajeToast(String mensaje) {
